@@ -10,10 +10,15 @@ ENV ADAGE_SRV=/srv
 # Directory where ADAGE code lives in the container
 ENV ADAGE_SRVSRC=$ADAGE_SRV/$ADAGE_SRC
 
+# Install packages from ubuntu.
 RUN apt-get update && apt-get install -y \
   python \
   python-pip \
-  python-psycopg2 # Install here so that postgres lib dependency is met.
+  python-psycopg2 \ # Install here so that postgres lib dependency is met.
+  nodejs
+
+# Install node packages.
+RUN npm -g install grunt-cli karma-cli bower
 
 # Create required directories
 WORKDIR $ADAGE_SRV

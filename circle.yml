@@ -14,6 +14,15 @@ dependencies:
     # first, so that we can make sure the db connections, etc are working.
     - pip install -r adage/requirements.txt
 
+    # Install node/bower requirements and grunt
+    - npm install:
+        pwd: interface
+    - bower install:
+        pwd: interface
+    - grunt:
+        pwd: interface
+
+
     # set region so we can use the aws command-line tool to log into ecr
     #- aws configure set default.region us-west-2
     #- eval $(aws ecr get-login)
