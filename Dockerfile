@@ -14,9 +14,10 @@ ENV ADAGE_SRVSRC=$ADAGE_SRV/$ADAGE_SRC
 RUN apt-get update && apt-get install -y \
   python \
   python-pip \
-  python-psycopg2 # Install here so that postgres lib dependency is met. \
   nodejs \
-  npm
+  npm \
+  python-psycopg2 # Install here so that postgres lib dependency is met.
+
 
 # Install node packages.
 RUN npm -g install grunt-cli karma-cli bower
