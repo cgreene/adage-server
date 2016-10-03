@@ -14,7 +14,7 @@ ENV ADAGE_SRVSRC=$ADAGE_SRV/$ADAGE_SRC
 RUN apt-get update && apt-get install -y \
   python \
   python-pip \
-  python-psycopg2 \ # Install here so that postgres lib dependency is met.
+  python-psycopg2 # Install here so that postgres lib dependency is met. \ 
   nodejs
 
 # Install node packages.
