@@ -1,10 +1,14 @@
 // Protractor configuration file.
 exports.config = {
+  // Sauce Info
+  sauceUser: process.env.SAUCE_USERNAME,
+  sauceKey: process.env.SAUCE_ACCESS_KEY,
+
   // The URL of the server that we are testing.
   baseUrl: 'http://localhost/',
 
   // The address of a running Selenium server.
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  seleniumAddress: 'http://ondemand.saucelabs.com:80',
   // According to:
   // http://stackoverflow.com/questions/19066747/integrating-protractor-with-yeoman-via-grunt
   // "grunt-protractor-runner" module already includes "protractor". If we

@@ -19,9 +19,6 @@ dependencies:
         pwd: interface
     - bower install:
         pwd: interface
-    - grunt:
-        pwd: interface
-
 
     # set region so we can use the aws command-line tool to log into ecr
     #- aws configure set default.region us-west-2
@@ -32,11 +29,28 @@ dependencies:
 
     # build new image
     - bash build.sh
+  post:
+    - wget https://saucelabs.com/downloads/sc-latest-linux.tar.gz
+    - tar -xzf sc-latest-linux.tar.gz
 
 test:
   override:
     # put your test command(s) here
     - python adage/manage.py test adage
+    - cd sc-*-linux && ./bin/sc --user $SAUCE_USERNAME --api-key $SAUCE_ACCESS_KEY --readyfile ~/sauce_is_ready:
+        background: true
+    # Wait for tunnel to be ready
+    - while [ ! -e ~/sauce_is_ready ]; do sleep 1; done
+    - python adage/manage.py migrate
+    - python adage/manage.py runserver:
+        background: true
+    # Wait for app to be ready
+    - curl --retry 10 --retry-delay 2 -v http://localhost:8000
+    # Run selenium tests
+    - grunt:
+        pwd: interface
+  post:
+    - killall --wait sc  # wait for Sauce Connect to close the tunnel
 
 deployment:
   production:
