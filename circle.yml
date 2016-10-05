@@ -19,6 +19,10 @@ dependencies:
         pwd: interface
     - bower install:
         pwd: interface
+    - grunt build:
+        pwd: interface
+    - grunt compile:
+        pwd: interface
 
     # set region so we can use the aws command-line tool to log into ecr
     #- aws configure set default.region us-west-2
@@ -43,21 +47,29 @@ test:
     - while [ ! -e ~/sauce_is_ready ]; do sleep 1; done
     - createdb circleci_test
     - python adage/manage.py migrate
-    - python adage/manage.py runserver:
-        background: true
+    # - python adage/manage.py runserver:
+    #    background: true
     # Wait for app to be ready
-    - curl --retry 10 --retry-delay 2 -v http://localhost:8000
+    # - curl --retry 10 --retry-delay 2 -v http://localhost:8000
     # Run selenium tests
-    - grunt:
-        pwd: interface
+    # - grunt:
+    #    pwd: interface
   post:
     - killall --wait sc  # wait for Sauce Connect to close the tunnel
 
 deployment:
   production:
-    # only apply this deployment on the master branch
-    branch: circle-ci-test
+    # deploy to adage from the production branch
+    branch: production
 
     commands:
       # push image to ecr
-      - bash push.sh
+      - bash push.sh adage
+
+  test:
+    # deploy to adage-test from the master branch
+    branch: master
+
+    commands:
+      # push image to ecr
+      - bash push.sh adage-test
